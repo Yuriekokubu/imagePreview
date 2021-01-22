@@ -33,7 +33,7 @@ const {
 
 app.use(
   cors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://link.auto8u.com'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
