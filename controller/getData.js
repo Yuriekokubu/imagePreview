@@ -33,14 +33,24 @@ exports.register = (req, res) => {
   const name = req.body.name;
   const username = req.body.username;
   const password = req.body.password;
-  bcrypt.hash(password, saltRounds, (err, hash) => {
-    if (err) {
-      console.log(err);
+  if (!name || !username || !password) {
+    return res.json({ message: 'field is required' });
+  }
+  const sqlCheckUserName =
+    'SELECT COUNT(username) FROM tb_user WHERE username = ?';
+  db.query(sqlCheckUserName, [username], (err, result) => {
+    if (result[0]['COUNT(username)'] > 0) {
+      return res.json({ message: 'Username has Already' });
     }
-    const sqlRegister =
-      'INSERT INTO tb_user (name,username,password) VALUES (?,?,?)';
-    db.query(sqlRegister, [name, username, hash], (err, result) => {
-      res.send({ message: 'success' });
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.log(err);
+      }
+      const sqlRegister =
+        'INSERT INTO tb_user (name,username,password) VALUES (?,?,?)';
+      db.query(sqlRegister, [name, username, hash], (err, result) => {
+        return res.send({ message: 'success' });
+      });
     });
   });
 };
@@ -97,13 +107,14 @@ exports.insertWeb = async (req, res, next) => {
   const webName = req.body.web_name;
   const webUrl = req.body.web_url;
   const webDetails = req.body.web_details;
+  const user_Id = req.body.userId;
 
   const sqlInsert =
     'INSERT INTO tb_web (web_name,web_url,web_details,user_id,timestamp) VALUES (?,?,?,?,?)';
   const dateNow = Date.now();
   await db.query(
     sqlInsert,
-    [webName, webUrl, webDetails, 1, dateNow],
+    [webName, webUrl, webDetails, user_Id, dateNow],
     (err, result) => {
       console.log(err);
       const sqlCheckLastIndex =

@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
-import { API } from '../config';
+import { API, IMG_URL, ZIP_URL, SVG_URL } from '../config';
 import MaterialNavbar from '../componenets/MaterialNavbar';
 import CloseIcon from '@material-ui/icons/Close';
 import PropTypes from 'prop-types';
@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { isNull } from 'lodash';
 
 const Edit = ({ match }) => {
   const [values, setValues] = useState({
@@ -88,7 +87,6 @@ const Edit = ({ match }) => {
     e.preventDefault();
     await Axios.put(`${API}/update`, values).then((data) => {
       toast.dark('Upload Successful');
-      setTimeout(window.location.reload(), 1500);
       setTimeout(init(), 1500);
     });
 
@@ -134,7 +132,6 @@ const Edit = ({ match }) => {
       const imgId = document.getElementById('image_preview');
       imgId.appendChild(img);
     }
-    console.log(fileUpdate);
   };
 
   const handleZips = (event) => {
@@ -161,7 +158,6 @@ const Edit = ({ match }) => {
       const imageSet = [...new Set(imageArray)];
       const zipSet = [...new Set(zipArray)];
 
-      console.log(zipSet);
 
       setValues({
         ...values,
@@ -176,7 +172,6 @@ const Edit = ({ match }) => {
     });
   };
 
-  console.log(values);
 
   const handleFileDelete = (file) => {
     const index = files.indexOf(file);
@@ -184,7 +179,6 @@ const Edit = ({ match }) => {
     if (index !== -1) {
       files.splice(index, 1);
     }
-    console.log(deleteFiles);
 
     // const d = document.getElementById(file);
     // d.parentNode.removeChild(d);
@@ -197,8 +191,6 @@ const Edit = ({ match }) => {
     if (index !== -1) {
       zips.splice(index, 1);
     }
-    console.log(zips);
-    console.log(deleteZip);
     setValues({ ...values, zips: zips });
   };
 
@@ -366,7 +358,7 @@ const Edit = ({ match }) => {
                             <img
                               key={i}
                               id={f}
-                              src={`${process.env.PUBLIC_URL}/assets/${f}`}
+                              src={`${IMG_URL}/${f}`}
                               style={{
                                 width: '150px',
                                 height: '150px',
@@ -415,10 +407,10 @@ const Edit = ({ match }) => {
                             <CloseIcon />
                           </div>
                           <img
-                            src={`${process.env.PUBLIC_URL}/icons/zip.svg`}
+                            src={`${SVG_URL}/zip.svg`}
                             style={{ maxWidth: '50px' }}
                             onClick={() =>
-                              window.open(`${process.env.PUBLIC_URL}/zip/${z}`)
+                              window.open(`${ZIP_URL}/zip/${z}`)
                             }
                             type="submit"
                           />

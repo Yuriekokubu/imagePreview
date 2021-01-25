@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import Axios from 'axios';
-import { API } from '../config';
+import { API, IMG_URL } from '../config';
 
 const LightboxExample = ({ img, webId }) => {
   const [photoIndex, setPhotoIndex] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [image, setImage] = useState([]);
-  const images = [`${process.env.PUBLIC_URL}/assets/${img}`];
+  const images = [`${IMG_URL}/${img}`];
 
   const init = () => {
     Axios.post(`${API}/image`, { web_id: webId }).then((result) => {
@@ -17,7 +17,7 @@ const LightboxExample = ({ img, webId }) => {
   };
 
   image.map((p) => {
-    let imgpath = `${process.env.PUBLIC_URL}/assets/${p.img_path}`;
+    let imgpath = `${IMG_URL}/${p.img_path}`;
     images.push(imgpath);
   });
 
@@ -31,8 +31,8 @@ const LightboxExample = ({ img, webId }) => {
   return (
     <div>
       <img
-        src={`${process.env.PUBLIC_URL}/assets/${img}`}
-        style={{ width: '50px' }}
+        src={`${IMG_URL}/${img}`}
+        style={{ width: '50px', height: '50px' }}
         type="button"
         onClick={() => setIsOpen(true)}
       />

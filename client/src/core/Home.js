@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link } from 'react-router-dom';
 import { API } from '../config';
 import MaterialNavbar from '../componenets/MaterialNavbar';
+import { isAuthenticated } from '../auth/index';
 
 const Home = () => {
   const [values, setValues] = useState({
@@ -16,6 +17,8 @@ const Home = () => {
   });
 
   const { web_name, web_details, web_url, files, zip } = values;
+
+  const [{ user_id }] = isAuthenticated().result;
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -33,6 +36,7 @@ const Home = () => {
       }
       formData.append(name, values[name]);
     }
+    formData.append('userId', user_id);
     Axios.post(`${API}/insert`, formData).then((data) => {
       toast.dark('Upload Successful', { closeOnClick: true, autoClose: 1000 });
     });
@@ -70,13 +74,11 @@ const Home = () => {
       imgId.appendChild(img);
     }
     setValues({ ...values, files: event.target.files });
-    console.log(event.target.files);
   };
 
   const handleZip = (event) => {
     event.preventDefault();
     setValues({ ...values, zip: event.target.files });
-    console.log(event.target.files);
   };
 
   return (

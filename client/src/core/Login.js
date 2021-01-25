@@ -18,7 +18,6 @@ const Login = () => {
       username: username,
       password: password,
     }).then((response) => {
-      console.log(response);
       if (!response.data.auth) {
         setLogged(false);
         toast.error(response.data.message);
@@ -37,7 +36,6 @@ const Login = () => {
 
   useEffect(() => {
     Axios.get(`${API}/login`).then((response) => {
-      console.log(response);
       if (response.data.loggedIn === true) {
         setLogged(true);
       }

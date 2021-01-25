@@ -74,6 +74,10 @@ export default function MenuAppBar() {
             }}
           >
             <ViewListIcon />
+            <Typography variant="body1" className={classes.title}>
+              {' '}
+              รายการ
+            </Typography>
           </IconButton>
           <IconButton
             edge="start"
@@ -85,6 +89,10 @@ export default function MenuAppBar() {
             }}
           >
             <AddPhotoAlternateIcon />
+            <Typography variant="body1" className={classes.title}>
+              {' '}
+              เพิ่มลิ้งค์
+            </Typography>
           </IconButton>
 
           {isAuthenticated().auth && (

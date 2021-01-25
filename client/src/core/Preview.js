@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import moment from 'moment';
-import { API } from '../config';
-import { Link } from 'react-router-dom';
+import { API, IMG_URL, SVG_URL, ZIP_URL } from '../config';
+import { Link, BrowserRouter as Router } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Modal from '../componenets/Modal';
 import { Grid, _ } from 'gridjs-react';
@@ -27,11 +27,9 @@ const Preview = () => {
     window.open(url);
   };
 
-  console.log(dataRow);
 
   const handleDelete = (link) => {
     Axios.delete(`${API}/delete`, { data: { deleteId: link } }).then((data) => {
-      console.log(link);
       toast.success('Delete Successful', {
         closeOnClick: true,
         duration: 1500,
@@ -40,35 +38,31 @@ const Preview = () => {
     });
   };
 
+  const subStringTextURL = (text) => {
+    return text.substring(2);
+  };
+
   const dataArray = [];
   dataRow.map((e) => {
     dataArray.push([
       e.web_id,
       _(
-        <LightBox img={e.img_path} webId={e.web_id} />
-        // e.img_path ? (
-        //   <a href={`/image/${e.web_id}`}>
-        //     <img
-        //       src={`${process.env.PUBLIC_URL}/assets/${e.img_path}`}
-        //       style={{ width: '50px' }}
-        //     />
-        //   </a>
-        // ) : (
-        //   'ไม่มีรูปแสดง'
-        // )
+        e.img_path ? (
+          <LightBox img={e.img_path} webId={e.web_id} />
+        ) : (
+          'ไม่มีรูปแสดง'
+        )
       ),
       e.web_name.slice(0, 20),
-      e.web_url.slice(0, 30),
+      subStringTextURL(`${e.web_url.match(/\/.*?\/.*?(?=\/)/) || [][0]}`),
       e.web_details.slice(0, 30),
       moment(e.timestamp).format('lll'),
       _(
         e.zip_path !== null ? (
           <img
             style={{ width: '30px' }}
-            src={`${process.env.PUBLIC_URL}/icons/zip.svg`}
-            onClick={() =>
-              window.open(`${process.env.PUBLIC_URL}/zip/${e.zip_path}`)
-            }
+            src={`${SVG_URL}/zip.svg`}
+            onClick={() => window.open(`${ZIP_URL}/${e.zip_path}`)}
             type="submit"
           />
         ) : (
