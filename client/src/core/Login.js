@@ -22,15 +22,15 @@ const Login = () => {
         setLogged(false);
         toast.error(response.data.message);
       } else {
-        localStorage.setItem('token', JSON.stringify(response.data));
         setLogged(true);
+        localStorage.setItem('token', JSON.stringify(response.data));
       }
     });
   };
 
   const RedirectTo = () => {
     if (logged) {
-      return <Redirect to="/insert" />;
+      return <Redirect to="/preview" />;
     }
   };
 
@@ -49,7 +49,7 @@ const Login = () => {
         {RedirectTo()}
         <form>
           <div class="form-group">
-            <label htmlFor="exampleInputEmail1">Username</label>
+            <label htmlFor="exampleInputEmail1">ชื่อผู้ใช้</label>
             <input
               type="text"
               class="form-control"
@@ -60,7 +60,7 @@ const Login = () => {
             />
           </div>
           <div class="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
+            <label htmlFor="exampleInputPassword1">รหัสผ่าน</label>
             <input
               type="password"
               class="form-control"
@@ -69,7 +69,7 @@ const Login = () => {
             />
           </div>
           <button onClick={(e) => handleSubmit(e)} class="btn btn-primary">
-            Submit
+            เข้าสู่ระบบ
           </button>
           <h1>{userLoggedIN}</h1>
         </form>

@@ -32,8 +32,12 @@ const LightboxExample = ({ img, webId }) => {
     <div>
       <img
         src={`${IMG_URL}/${img}`}
-        style={{ width: '50px', height: '50px' }}
-        type="button"
+        style={{
+          width: '50px',
+          height: '50px',
+          cursor: 'pointer',
+          objectFit: 'cover',
+        }}
         onClick={() => setIsOpen(true)}
       />
       {isOpen && (

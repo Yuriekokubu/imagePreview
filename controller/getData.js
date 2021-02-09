@@ -103,6 +103,15 @@ exports.imageAll = async (req, res) => {
   });
 };
 
+exports.getAllImage = async (req, res) => {
+  const sqlGetImageALl =
+    'SELECT tb_web.web_id,tb_web.web_name,tb_web.web_url,tb_img.img_path FROM tb_web LEFT JOIN tb_img ON tb_img.web_id = tb_web.web_id GROUP BY tb_web.web_id ORDER BY tb_web.web_id DESC';
+  await db.query(sqlGetImageALl, (err, result) => {
+    res.json(result);
+    console.log(result);
+  });
+};
+
 exports.insertWeb = async (req, res, next) => {
   const webName = req.body.web_name;
   const webUrl = req.body.web_url;
@@ -254,8 +263,9 @@ exports.update = (req, res, next) => {
 exports.dropRow = (req, res) => {
   const webId = req.body.deleteId;
   console.log(webId);
-  const sqlDropRow = 'DELETE FROM tb_web WHERE web_id = ?';
-  db.query(sqlDropRow, [webId], (err, result) => {
+  const sqlDropRow =
+    'DELETE FROM tb_web WHERE web_id = ?;DELETE FROM tb_img WHERE web_id = ?;DELETE FROM tb_zip WHERE web_id = ?;';
+  db.query(sqlDropRow, [webId, webId, webId], (err, result) => {
     res.setHeader('content-type', 'application/json');
     res.status(200).json({ message: 'success' });
     console.log(result);

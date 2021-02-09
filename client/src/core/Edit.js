@@ -7,7 +7,6 @@ import { API, IMG_URL, ZIP_URL, SVG_URL } from '../config';
 import MaterialNavbar from '../componenets/MaterialNavbar';
 import CloseIcon from '@material-ui/icons/Close';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -56,14 +55,6 @@ const Edit = ({ match }) => {
     };
   }
 
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-      backgroundColor: theme.palette.background.paper,
-    },
-  }));
-
-  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -158,7 +149,6 @@ const Edit = ({ match }) => {
       const imageSet = [...new Set(imageArray)];
       const zipSet = [...new Set(zipArray)];
 
-
       setValues({
         ...values,
         web_id,
@@ -171,7 +161,6 @@ const Edit = ({ match }) => {
       });
     });
   };
-
 
   const handleFileDelete = (file) => {
     const index = files.indexOf(file);
@@ -243,7 +232,6 @@ const Edit = ({ match }) => {
                   name="w_url"
                   id="w_url"
                   className="form-control"
-                  required
                   value={web_url}
                   onChange={(e) =>
                     setValues({ ...values, web_url: e.target.value })
@@ -292,7 +280,6 @@ const Edit = ({ match }) => {
                   name="w_details"
                   id="w_details"
                   className="form-control"
-                  required
                   value={web_details}
                   onChange={(e) =>
                     setValues({
@@ -314,8 +301,8 @@ const Edit = ({ match }) => {
             </form>
           </div>
           <div id="image_preview" className="col-md-7 mt-3">
-            <div className={classes.root}>
-              <AppBar position="static">
+            <div>
+              <AppBar style={{ backgroundColor: '#3d3e3f' }} position="static">
                 <Tabs
                   value={value}
                   onChange={handleChange}
@@ -362,6 +349,7 @@ const Edit = ({ match }) => {
                               style={{
                                 width: '150px',
                                 height: '150px',
+                                objectFit: 'cover',
                               }}
                               className="mr-1 mb-1"
                             />
@@ -409,9 +397,7 @@ const Edit = ({ match }) => {
                           <img
                             src={`${SVG_URL}/zip.svg`}
                             style={{ maxWidth: '50px' }}
-                            onClick={() =>
-                              window.open(`${ZIP_URL}/zip/${z}`)
-                            }
+                            onClick={() => window.open(`${ZIP_URL}/zip/${z}`)}
                             type="submit"
                           />
                           <h6

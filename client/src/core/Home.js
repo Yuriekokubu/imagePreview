@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import { API } from '../config';
 import MaterialNavbar from '../componenets/MaterialNavbar';
 import { isAuthenticated } from '../auth/index';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 
 const Home = () => {
   const [values, setValues] = useState({
@@ -20,7 +23,7 @@ const Home = () => {
 
   const [{ user_id }] = isAuthenticated().result;
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     for (const name in values) {
@@ -37,8 +40,9 @@ const Home = () => {
       formData.append(name, values[name]);
     }
     formData.append('userId', user_id);
-    Axios.post(`${API}/insert`, formData).then((data) => {
+    await Axios.post(`${API}/insert`, formData).then((data) => {
       toast.dark('Upload Successful', { closeOnClick: true, autoClose: 1000 });
+      window.location.reload();
     });
     setValues({
       ...values,
@@ -57,9 +61,6 @@ const Home = () => {
     // elem.parentNode.removeChild(elem);
     // const imgDiv = document.createElement('img');
     // imgDiv.setAttribute('id', 'image_preview');
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
   };
 
   const handleFiles = (event) => {
@@ -68,7 +69,10 @@ const Home = () => {
     for (let i = 0; i < total_file; i++) {
       const img = document.createElement('img');
       img.setAttribute('id', 'imgPre');
-      img.style.width = '150px';
+      img.style.width = '300px';
+      img.style.height = '300px';
+      img.style.margin = '10px';
+      img.style.borderRadius = '10px';
       img.src = URL.createObjectURL(event.target.files[i]);
       const imgId = document.getElementById('image_preview');
       imgId.appendChild(img);
@@ -85,7 +89,7 @@ const Home = () => {
     <div>
       <MaterialNavbar />
       <div className="container my-5">
-        <div id="image_preview" className="d-flex flex-row"></div>
+        <div id="image_preview" className="d-flex"></div>
         <form onSubmit={submitForm} encType="multipart/form-data">
           <div className="mb-3">
             <label htmlFor="exampleInputName" className="form-label">
@@ -112,7 +116,6 @@ const Home = () => {
               name="w_url"
               id="w_url"
               className="form-control"
-              required
               value={web_url}
               onChange={(e) =>
                 setValues({ ...values, web_url: e.target.value })
@@ -159,7 +162,6 @@ const Home = () => {
               name="w_details"
               id="w_details"
               className="form-control"
-              required
               value={web_details}
               onChange={(e) =>
                 setValues({ ...values, web_details: e.target.value })
@@ -172,13 +174,13 @@ const Home = () => {
             value="อัพโหลด"
             type="submit"
           />
-          <Link to="/preview">
-            <button className="btn btn-primary mr-2">ดูข้อมูลทั้งหมด</button>
-          </Link>
           <Link to="/" onClick={() => window.location.reload()}>
             <button className="btn btn-danger">ล้าง</button>
           </Link>
         </form>
+        <Link to="/preview">
+          <div className="mt-3">ดูข้อมูลทั้งหมด</div>
+        </Link>
       </div>
     </div>
   );

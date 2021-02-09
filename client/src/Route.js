@@ -5,6 +5,7 @@ import Preview from './core/Preview';
 import Image from './core/Image';
 import Edit from './core/Edit';
 import Login from './core/Login';
+import Grid from './core/Grid';
 import { ToastContainer } from 'react-toastify';
 import './App.css';
 import AdminRoute from './auth/AdminRoute';
@@ -16,6 +17,7 @@ const Routes = () => {
         <ToastContainer closeOnClick duration={1000} />
         <Switch>
           <Route path="/" exact component={Login} />
+          <Route path="/grid" exact component={Grid} />
           <AdminRoute path="/insert" exact component={Home} />
           <AdminRoute path="/preview" exact component={Preview} />
           <AdminRoute path="/image/:webId" exact component={Image} />

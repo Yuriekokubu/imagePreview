@@ -13,6 +13,7 @@ import { signout, isAuthenticated } from '../auth/index';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import FaceIcon from '@material-ui/icons/Face';
+import { SVG_URL } from '../config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +49,7 @@ export default function MenuAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar style={{ backgroundColor: '#2c2d2f' }} position="static">
         <Toolbar>
           <IconButton
             edge="start"
@@ -59,41 +60,64 @@ export default function MenuAppBar() {
               history.push('/insert');
             }}
           >
-            <ImageSharpIcon />
+            <img src={`${SVG_URL}/logo.png`} style={{ width: '30px' }} />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             Link Preview
           </Typography>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={() => {
-              history.push('/preview');
-            }}
-          >
-            <ViewListIcon />
-            <Typography variant="body1" className={classes.title}>
-              {' '}
-              รายการ
-            </Typography>
-          </IconButton>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            onClick={() => {
-              history.push('/insert');
-            }}
-          >
-            <AddPhotoAlternateIcon />
-            <Typography variant="body1" className={classes.title}>
-              {' '}
-              เพิ่มลิ้งค์
-            </Typography>
-          </IconButton>
+          {isAuthenticated().auth && (
+            <>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  history.push('/preview');
+                }}
+              >
+                <ViewListIcon />
+                <Typography variant="body1" className={classes.title}>
+                  {' '}
+                  รายการ
+                </Typography>
+              </IconButton>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  history.push('/insert');
+                }}
+              >
+                <AddPhotoAlternateIcon />
+                <Typography variant="body1" className={classes.title}>
+                  {' '}
+                  เพิ่ม
+                </Typography>
+              </IconButton>{' '}
+            </>
+          )}
+
+          {!(isAuthenticated().auth) && (
+            <>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+                onClick={() => {
+                  history.push('/grid');
+                }}
+              >
+                <Typography variant="body1" className={classes.title}>
+                  {' '}
+                  เข้าชมตัวอย่าง
+                </Typography>
+              </IconButton>{' '}
+            </>
+          )}
 
           {isAuthenticated().auth && (
             <div>
@@ -129,7 +153,7 @@ export default function MenuAppBar() {
                     })
                   }
                 >
-                  Log out
+                  ออกจากระบบ
                 </MenuItem>
               </Menu>
             </div>

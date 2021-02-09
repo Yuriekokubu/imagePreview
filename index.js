@@ -22,6 +22,7 @@ const {
   imageOne,
   getZip,
   insertZipUpdate,
+  getAllImage,
 } = require('./controller/getData');
 const {
   upload,
@@ -81,6 +82,7 @@ app.post(
 app.post('/api/image', getImage);
 app.post('/api/register', register);
 app.post('/api/login', login);
+app.get('/api/mansory', getAllImage);
 
 app.put('/api/update', update);
 app.post('/api/imageUpdate', updateImage, insertImageUpdate);
